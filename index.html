@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+    <link rel="stylesheet" href="main.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header">
+                <span class="header__text">От слов к формам: создаем пространство для ваших фантазий</span>
+                <h1>OmniShaper AI</h1>
+            </div>
+        </div>
+    </header>
+    <section>
+        <div class="container">
+            <div class="main">
+                <div class="main__about">
+                    <p class="main__about__text">
+                        Вдохновляйтесь и воплощайте свои идеи в трехмерных моделях с помощью нашего инновационного инструмента на основе технологий с применением искусственного интеллекта.
+                    </p>
+                    <button class="main__about__btn open">Подписаться на обновления</button>
+                    <div class="main__about__pluses">
+                        <div class="main__about__pluses__item">
+                            <span class="main__about__pluses__item__title">Машинное обучение</span>
+                            <p class="main__about__pluses__item__text">Наша технология использует передовые алгоритмы глубокого машинного обучения, что обеспечивает высокую точность и качество преобразования текста в 3D модели.</p>
+                        </div>
+                        <div class="main__about__pluses__item">
+                            <span class="main__about__pluses__item__title">Простой интерфейс</span>
+                            <p class="main__about__pluses__item__text">Легкость использования благодаря интуитивному интерфейсу, не требующему специальных навыков и глубоких знаний в области 3D-моделирования.</p>
+                        </div>
+                        <div class="main__about__pluses__item">
+                            <span class="main__about__pluses__item__title">Широкие возможности применения</span>
+                            <p class="main__about__pluses__item__text">Наше решение подходит для широкого круга пользователей, от дизайнеров и архитекторов до любителей, предлагая возможность создания моделей для игр, обучения и многого другого.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="main__images">
+                    <div class="slider">
+                        <div class="slider__item">
+                            <div class="prompt">
+                                Big mushroom model, ultra realistic, aesthetic, fantasy world mushroom
+                            </div>
+                            <div id="scene"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- <img src="img/Window.png" alt="3d_window"> -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="subscription">
+                <h2>
+                    Тариф
+                </h2>
+                <div class="subscription__info">
+                    <span class="subscription__info__title">799 руб. / м.</span>
+                    <ul class="subscription__info__list">
+                        <li class="subscription__info__list__item">Доступ к основным функциям</li>
+                        <li class="subscription__info__list__item">Неограниченая генерация</li>
+                        <li class="subscription__info__list__item">Возможность экспорта моделей в любом формате</li>
+                    </ul>
+                </div>
+                <button class="subscription__btn open">Оформить подписку</button>
+                <button id="subscribe" class="subscription__btn open">Подписаться на обновления</button>
+            </div>
+        </div>
+    </section>
+    <div class="modal">
+        <form id="form" action="POST" class="modal__form">
+            <label for="name">
+                <span>Ваше имя</span>
+                <input type="text" id="name" placeholder="<Name prompt>" required>
+            </label>
+            <label  for="email">
+                <span style="margin-top: 50px;">Ваш Email</span>
+                <input type="text" id="email" placeholder="<Email prompt>" required>
+            </label>
+            <button id="submit" class="subscription__btn">Отправить</button>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/fflate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script type="text/javascript" src="/slick/slick.min.js"></script>
+    <script>
+        let scene, camera, renderer, model;
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xaaaaaa);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 1000);
+            camera.position.z = 5;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            const container = document.getElementById('scene');
+            renderer.setSize(400, 300);
+            renderer.set
+            container.appendChild(renderer.domElement);
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(1, 1, 1).normalize();
+            scene.add(directionalLight);
+
+            // Load Model
+            const mtlLoader = new THREE.MTLLoader();
+            mtlLoader.load('/Models/material0.mtl', function(materials) {
+                materials.preload();
+
+                const objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials(materials);
+                objLoader.load('/Models/mushroom.obj', function(object) {
+                    model = object;
+                    scene.add(model);
+                    animate();
+                });
+            });
+
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('scene');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (model) {
+                model.rotation.y += 0.01;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        init();
+
+        const fadeIn = (el, timeout, display) =>{
+    el.style.opacity = 0;
+    el.style.display = display || 'flex';
+    el.style.transition = `opacity ${timeout}ms`
+    setTimeout(() => {
+        el.style.opacity = 1;
+    }, 10);
+};
+
+const fadeOut = (el, timeout) =>{
+    el.style.opacity = 1;
+    el.style.transition = `opacity ${timeout}ms`
+    el.style.opacity = 0;
+    setTimeout(() => {
+        el.style.display = 'none';
+    },timeout);
+};
+
+
+        document.querySelectorAll(".open").forEach(el => {
+            el.addEventListener("click", function(){
+                fadeIn(document.querySelector(".modal"), 1000);
+            })
+        });
+        const token = "7463729868:AAFbaZhiEezzloI2c4T-CgXosOpY7pD9yKU";
+        const chat_id = "-4207837555";
+        document.getElementById("form").addEventListener("submit", function(e){
+            e.preventDefault();
+            let message = `Заявка с сайта\n`;
+            message += `Имя: ${document.getElementById("name").value}\n`;
+            message += `Email: ${document.getElementById("email").value}\n`;
+            const URIAPI = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}`;
+            fetch(URIAPI, {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(() => {
+                document.getElementById("email").value = "";
+                document.getElementById("name").value = "";
+                fadeOut(document.querySelector(".modal"), 1000);
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        });
+    </script>
+</body>
+</html>
