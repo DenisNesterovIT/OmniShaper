@@ -20,7 +20,7 @@
   margin-bottom: 50px;
 }
 .header__text {
-  width: 60%;
+  width: 50%;
   color: #333333;
   font-size: 36px;
   font-family: Lato, sans-serif;
@@ -167,7 +167,6 @@ h2 {
   margin-bottom: 10px;
 }
 .subscription__btn {
-  width: 330px;
   height: 65px;
   padding: 24px 56px;
   background: #333333;
@@ -179,6 +178,7 @@ h2 {
   line-height: 18px;
   word-wrap: break-word;
   margin-top: 50px;
+  border: none;
   cursor: pointer;
 }
 
@@ -219,11 +219,19 @@ canvas {
   justify-content: center;
 }
 .modal__form {
-  width: 733px;
-  height: 465px;
+  width: 900px;
   background: #D9D9D9;
   border-radius: 40px;
   padding: 50px;
+  position: relative;
+}
+.modal__form__close__btn {
+  background-color: transparent;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+  border: none;
 }
 .modal__form span {
   display: block;
@@ -234,7 +242,7 @@ canvas {
   word-wrap: break-word;
 }
 .modal__form input {
-  width: 384px;
+  width: 500px;
   height: 19px;
   color: #333333;
   font-size: 16px;
@@ -246,8 +254,38 @@ canvas {
   border-radius: 30px;
   margin-top: 30px;
 }
+.modal__form__no {
+  color: black;
+  font-size: 15px;
+  font-family: Lato, sans-serif;
+  font-weight: 500;
+  line-height: 18px;
+  word-wrap: break-word;
+  text-align: center;
+  margin: 20px 0 10px 0;
+}
 
 #submit {
+  height: 50px;
+  padding: 15px 50px;
   display: block;
   margin: 30px auto 0 auto;
+  cursor: pointer;
+}
+
+#register {
+  display: block;
+  margin: 30px auto 0 auto;
+  cursor: pointer;
+}
+
+h3 {
+  color: #333333;
+  font-size: 30px;
+  font-family: Lato, sans-serif;
+  font-weight: 700;
+  line-height: 50px;
+  letter-spacing: 0.3px;
+  word-wrap: break-word;
+  text-align: center;
 }/*# sourceMappingURL=main.css.map */
