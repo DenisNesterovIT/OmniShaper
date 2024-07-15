@@ -184,12 +184,14 @@ document.querySelectorAll(".login").forEach(el => {
                 //For login
                 const email = document.getElementById("email").value;
                 const password = document.getElementById("password").value;
+                window.location.href = "/service.html";
             }else if (action === "register"){
                 console.log("Register");
                 //For register
                 const email = document.getElementById("email").value;
                 const password = document.getElementById("password").value;
                 const name = document.getElementById("name").value;
+                window.location.href = "/service.html";
             }else{
                 alert("Ошибка");
             }

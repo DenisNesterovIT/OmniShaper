@@ -288,4 +288,19 @@ h3 {
   letter-spacing: 0.3px;
   word-wrap: break-word;
   text-align: center;
+}
+
+#prompt {
+  width: 450px;
+  height: 200px;
+  padding: 24px;
+  background: #C6D9E1;
+  border-radius: 24px;
+  border: none;
+  margin: 30px auto;
+  color: #333333;
+  font-size: 20px;
+  font-family: Lato, sans-serif;
+  font-weight: 400;
+  word-wrap: break-word;
 }/*# sourceMappingURL=main.css.map */
