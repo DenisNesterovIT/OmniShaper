@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/slick/slick.css"/>
-    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="/main.css">
     <title>Document</title>
 </head>
 <body>
@@ -25,24 +23,29 @@
                         Вдохновляйтесь и воплощайте свои идеи в трехмерных моделях с помощью нашего инновационного инструмента на основе технологий с применением искусственного интеллекта.
                     </p>
                     <h3>Введите ваш запрос</h3>
-                    <textarea placeholder="Wooden chair, sci-fi, UHD..." name="prompt" id="prompt"></textarea>
-                    <button type="button" id="generate" style="width: fit-content; margin: 0 auto;" class="main__about__btn">Создать 3Д модель</button>
+                    <form id="generateForm">
+                        <textarea placeholder="Wooden chair, sci-fi, UHD..." name="prompt" id="prompt"></textarea>
+                        <button type="button" id="generate" style="width: fit-content; margin: 0 auto;" class="main__about__btn">Создать 3Д модель</button>
+                    </form>
                 </div>
                 <div class="main__images">
-                    <div id="scene"></div>
+                    <div id="scene" style="width: 100%; height: 400px;"></div>
                 </div>
             </div>
         </div>
     </section>
+    <div class="images">
+        <div class="images__imageContainer">
+            <img class="image2D" src="" id="img_0" alt="image0">
+            <img class="image2D" src="" id="img_1" alt="image1">
+            <img class="image2D" src="" id="img_2" alt="image2">
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/fflate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
-    <script type="text/javascript" src="/slick/slick.min.js"></script>
-    <script src="service.js"></script>
-    <!-- Yandex.Metrika counter --> 
-<!-- /Yandex.Metrika counter -->
+
+    <script type="module" src="/service.js"></script>
 </body>
 </html>

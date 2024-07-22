@@ -1,68 +1,65 @@
 let scene, camera, renderer, model;
+                function init() {
+                    // Scene
+                    scene = new THREE.Scene();
+                    scene.background = new THREE.Color(0xaaaaaa);
 
-        function init() {
-            // Scene
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xaaaaaa);
+                    // Camera
+                    camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 1000);
+                    camera.position.z = 2;
+                    
 
-            // Camera
-            camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 1000);
-            camera.position.z = 5;
 
-            // Renderer
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            const container = document.getElementById('scene');
-            renderer.setSize(400, 300);
-            renderer.set
-            container.appendChild(renderer.domElement);
+                    // Renderer
+                    renderer = new THREE.WebGLRenderer({ antialias: true });
+                    const container = document.getElementById('scene');
+                    renderer.setSize(600, 400);
+                    container.appendChild(renderer.domElement);
 
-            // Lights
-            const ambientLight = new THREE.AmbientLight(0x404040);
-            scene.add(ambientLight);
+                    // Lights
+                    const ambientLight = new THREE.AmbientLight(0x404040);
+                    scene.add(ambientLight);
 
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(1, 1, 1).normalize();
-            scene.add(directionalLight);
+                    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+                    directionalLight.position.set(1, 1, 1).normalize();
+                    scene.add(directionalLight);
 
-            // Load Model
-            const mtlLoader = new THREE.MTLLoader();
-            mtlLoader.load('/Models/material0.mtl', function(materials) {
-                materials.preload();
+                    // Load Model
+                    const mtlLoader = new THREE.MTLLoader();
+                    mtlLoader.load(`/Models/material0.mtl`, function(materials) {
+                        materials.preload();
 
-                const objLoader = new THREE.OBJLoader();
-                objLoader.setMaterials(materials);
-                objLoader.load('/Models/mushroom.obj', function(object) {
-                    model = object;
-                    scene.add(model);
-                    animate();
-                });
-            });
+                        const objLoader = new THREE.OBJLoader();
+                        objLoader.setMaterials(materials);
+                        objLoader.load('/Models/mushroom.obj', function(object) {
+                            model = object;
+                            scene.add(model);
+                            animate();
+                        });
+                    });
 
-            window.addEventListener('resize', onWindowResize, false);
-        }
+                    window.addEventListener('resize', onWindowResize, false);
+                }
 
-        function onWindowResize() {
-            const container = document.getElementById('scene');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
+                function onWindowResize() {
+                    const container = document.getElementById('scene');
+                    const width = container.clientWidth;
+                    const height = container.clientHeight;
 
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-        }
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(width, height);
+                }
+                function animate() {
+                    requestAnimationFrame(animate);
+                    if (model) {
+                        model.rotation.y += 0.01;
+                    }
 
-        function animate() {
-            requestAnimationFrame(animate);
+                    renderer.render(scene, camera);
+                }
 
-            if (model) {
-                model.rotation.y += 0.01;
-            }
-
-            renderer.render(scene, camera);
-        }
-
-        init();
-
+                init();
         const fadeIn = (el, timeout, display) =>{
     el.style.opacity = 0;
     el.style.display = display || 'flex';
@@ -174,7 +171,7 @@ document.querySelectorAll(".login").forEach(el => {
             .then(() => {
                 document.getElementById("email").value = "";
                 document.getElementById("name").value = "";
-                fadeOut(document.querySelector(".modal"), 1000);
+                fadeOut(document.querySelector(".modal"), 1000, modalForm);
             })
             .catch(error => {
                 alert('Error: ' + error);
