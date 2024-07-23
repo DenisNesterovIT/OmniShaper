@@ -1,81 +1,80 @@
 
 import { OrbitControls } from "https://unpkg.com/three@0.112/examples/jsm/controls/OrbitControls.js";
-// let scene, camera, renderer, model;
-//                 function init() {
-//                     // Scene
-//                     scene = new THREE.Scene();
-//                     scene.background = new THREE.Color(#C6D9E1);
+let scene, camera, renderer;
+const handle = "http://81.94.156.31:8000";
+let sprite;
+function init() {
+    // Scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xC6D9E1);
 
-//                     // Camera
-//                     camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 1000);
-//                     camera.position.z = 2;
-                    
+    // Camera
+    camera = new THREE.PerspectiveCamera(75, 800 / 600, 0.1, 1000);
+    camera.position.z = 2;
 
+    // Renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    const container = document.getElementById('scene');
+    renderer.setSize(600, 400);
+    container.appendChild(renderer.domElement);
 
-//                     // Renderer
-//                     renderer = new THREE.WebGLRenderer({ antialias: true });
-//                     const container = document.getElementById('scene');
-//                     renderer.setSize(600, 400);
-//                     container.appendChild(renderer.domElement);
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0x404040);
+    scene.add(ambientLight);
 
-//                     // Lights
-//                     const ambientLight = new THREE.AmbientLight(0x404040);
-//                     scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 1).normalize();
+    scene.add(directionalLight);
 
-//                     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-//                     directionalLight.position.set(1, 1, 1).normalize();
-//                     scene.add(directionalLight);
+    // Add 2D Image as Sprite
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.load('/img/wait.png', function (texture) {
+        const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+        sprite = new THREE.Sprite(spriteMaterial);
+        sprite.position.set(0, 0, 0); // Adjust the position as needed
+        sprite.scale.set(1, 1, 1); // Adjust the scale as needed
+        scene.add(sprite);
+    });
 
-//                     // Load Model
-//                     const mtlLoader = new THREE.MTLLoader();
-//                     mtlLoader.load(`/Models/${312}/refined.mtl`, function(materials) {
-//                         materials.preload();
+    window.addEventListener('resize', onWindowResize, false);
 
-//                         const objLoader = new THREE.OBJLoader();
-//                         objLoader.setMaterials(materials);
-//                         objLoader.load(`/Models/${312}/refined.obj`, function(object) {
-//                             model = object;
-//                             scene.add(model);
-//                             animate();
-//                         });
-//                     });
+    animate();
+}
 
-//                     window.addEventListener('resize', onWindowResize, false);
-//                 }
+function onWindowResize() {
+    const container = document.getElementById('scene');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
 
-//                 function onWindowResize() {
-//                     const container = document.getElementById('scene');
-//                     const width = container.clientWidth;
-//                     const height = container.clientHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+}
 
-//                     camera.aspect = width / height;
-//                     camera.updateProjectionMatrix();
-//                     renderer.setSize(width, height);
-//                 }
-                // function animate() {
-                //     requestAnimationFrame(animate);
-                //     if (model) {
-                //         model.rotation.y += 0.01;
-                //     }
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
 
-                //     renderer.render(scene, camera);
-                // }
-
-//                 init();
+init();
 
 
         
 
 async function request2D(prompt){
-    const response = await fetch(`http://62.68.147.175:8000/request/2D/${prompt}`);
+    startLoading();
+    const response = await fetch(`${handle}/request/2D/${prompt}`);
     const result = await response.json();
+    stopLoading();
     return result;
 }
 
 async function request3D(id, num){
-    const response = await fetch(`http://62.68.147.175:8000/request/3D/${id}/${num}`);
+    startLoading();
+    const response = await fetch(`${handle}/request/3D/${id}/${num}`);
     console.log(id + " " + num)
     const result = await response.json();
+    stopLoading();
     return result;
 }
 
@@ -147,14 +146,11 @@ generateButtton.addEventListener("click", async function(e) {
     fadeIn(images, 500, "flex");
 });
 
-function base64ToArrayBuffer(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
+function startLoading(){
+    document.querySelector(".loading").style.display = "flex";
+}
+function stopLoading(){
+    document.querySelector(".loading").style.display = "none";
 }
 
 images2D.forEach((image, index) => {
@@ -183,15 +179,8 @@ images2D.forEach((image, index) => {
         const pngBlobUrl = URL.createObjectURL(base64ToBlob(pngData, 'image/png'));
 
         // Three.js setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        const container = document.getElementById('scene');
-        renderer.setSize(600, 400);
-        container.appendChild(renderer.domElement);
-        scene.background = new THREE.Color("#C6D9E1");
-        const light = new THREE.AmbientLight(0xffffff);
-        scene.add(light);
+        scene.remove(sprite);
+        camera.updateProjectionMatrix();
         const controls = new OrbitControls(camera, renderer.domElement)
         controls.enableDamping = true
         controls.dampingFactor = 0.25
@@ -229,15 +218,17 @@ images2D.forEach((image, index) => {
 
         camera.position.z = 1.5;
 
-
+        window.addEventListener('resize', onWindowResize, false);
         // Handle window resize
-        window.addEventListener('resize', function () {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            renderer.setSize(width, height);
+        function onWindowResize() {
+            const container = document.getElementById('scene');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+        
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
-        });
+            renderer.setSize(width, height);
+        }
     });
 });
 

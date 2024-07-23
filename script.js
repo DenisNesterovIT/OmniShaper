@@ -39,17 +39,18 @@ let scene, camera, renderer, model;
                     });
 
                     window.addEventListener('resize', onWindowResize, false);
+        // Handle window resize
+        function onWindowResize() {
+            const container = document.getElementById('scene');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+        
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
                 }
 
-                function onWindowResize() {
-                    const container = document.getElementById('scene');
-                    const width = container.clientWidth;
-                    const height = container.clientHeight;
-
-                    camera.aspect = width / height;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(width, height);
-                }
                 function animate() {
                     requestAnimationFrame(animate);
                     if (model) {
